@@ -21,19 +21,31 @@ import javax.jms.MessageListener;
         propertyValue = "Auto-acknowledge")})
 public class ReceiverMessage implements MessageListener {
 
-    @Inject
     private WeatherService weatherService;
+
+    @Inject
+    public ReceiverMessage(WeatherService weatherService) {
+        this.weatherService = weatherService;
+    }
+
+    public ReceiverMessage() {
+    }
 
     /**
      * Принимает данные для последующей обработке
      * @param message
      */
     public void onMessage(Message message) {
+
+        if (message==null) {
+            throw new RuntimeException("Parameter message is null");
+        }
+
         WeatherDataTransfer weatherDataTransfer = null;
         try {
             weatherDataTransfer = message.getBody(WeatherDataTransfer.class);
         } catch (JMSException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
         weatherService.save(weatherDataTransfer);
     }

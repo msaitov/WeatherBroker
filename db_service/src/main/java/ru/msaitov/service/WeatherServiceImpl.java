@@ -15,11 +15,15 @@ import javax.inject.Inject;
 @RequestScoped
 public class WeatherServiceImpl implements WeatherService {
 
-    @Inject
-    private MapperWeather mapperWeather;
+    private final MapperWeather mapperWeather;
+
+    private final WeatherDao weatherDao;
 
     @Inject
-    private WeatherDao weatherDao;
+    public WeatherServiceImpl(MapperWeather mapperWeather, WeatherDao weatherDao) {
+        this.mapperWeather = mapperWeather;
+        this.weatherDao = weatherDao;
+    }
 
     /**
      * {@inheritDoc}

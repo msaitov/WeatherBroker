@@ -11,8 +11,12 @@ import javax.inject.Inject;
  */
 public class CommunicationServlet extends HessianServlet implements Communication {
 
+    private final WeatherService weatherService;
+
     @Inject
-    private WeatherService weatherService;
+    public CommunicationServlet(WeatherService weatherService) {
+        this.weatherService = weatherService;
+    }
 
     /**
      * {@inheritDoc}

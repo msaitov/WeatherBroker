@@ -15,5 +15,5 @@ public interface YahooGetWeather {
      * @return
      * @throws IOException
      */
-    WeatherDataTransfer getCity(String cityJSP) throws IOException;
+    WeatherDataTransfer getDataWeather(String cityJSP) throws IOException;
 }

@@ -14,8 +14,13 @@ import java.util.List;
 @RequestScoped
 public class WeatherDaoImpl implements WeatherDao {
 
-    @PersistenceContext(unitName="WeatherPersistenceUnit")
+
     private EntityManager em;
+
+    @PersistenceContext(unitName="WeatherPersistenceUnit")
+    public void setEm(EntityManager em) {
+        this.em = em;
+    }
 
     /**
      * {@inheritDoc}
@@ -31,7 +36,7 @@ public class WeatherDaoImpl implements WeatherDao {
     @Override
     public WeatherEntity getLastItem() {
         Query query = em.createQuery("SELECT we FROM WeatherEntity we ORDER BY we.id desc");
-        List<WeatherEntity> weatherEntity =(List<WeatherEntity>) query.getResultList();
-        return weatherEntity.get(0);
+        List<WeatherEntity> weatherEntityList = query.getResultList();
+        return weatherEntityList.get(0);
     }
 }

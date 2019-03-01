@@ -22,28 +22,40 @@ import java.io.IOException;
                 propertyValue = "javax.jms.Queue"),
         @ActivationConfigProperty(propertyName = "acknowledgeMode",
                 propertyValue = "Auto-acknowledge")})
+
 public class ReceiverMessage implements MessageListener {
 
-    @Inject
-    private SenderObject senderData;
+    private SenderObject senderObject;
+
+    private YahooGetWeather yahooGetWeather;
 
     @Inject
-    private YahooGetWeather yahooGetWeather;
+    public ReceiverMessage(final SenderObject senderObject, final YahooGetWeather yahooGetWeather) {
+        this.senderObject = senderObject;
+        this.yahooGetWeather = yahooGetWeather;
+    }
+
+    public ReceiverMessage() {
+    }
 
     /**
      * Слушатель, получаем название города, извлекаем данные о погоде и отправляем дальше
      * @param message
      */
-    public void onMessage(Message message) {
+    public void onMessage(final Message message) {
+
+        if (message==null) {
+            throw new RuntimeException("Parameter message is null");
+        }
 
         WeatherDataTransfer weatherDataTransfer = null;
         try {
             String cityName = message.getBody(String.class);
-            weatherDataTransfer = yahooGetWeather.getCity(cityName);
+            weatherDataTransfer = yahooGetWeather.getDataWeather(cityName);
         } catch (IOException | JMSException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
-        senderData.send(weatherDataTransfer);
+        senderObject.send(weatherDataTransfer);
     }
 
 

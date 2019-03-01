@@ -6,6 +6,7 @@ import javax.annotation.Resource;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.jms.JMSContext;
+import javax.jms.JMSProducer;
 import javax.jms.Queue;
 
 /**
@@ -14,19 +15,28 @@ import javax.jms.Queue;
 @RequestScoped
 public class SenderObjectImpl implements SenderObject {
 
-    @Resource(mappedName = "java:jboss/exported/jms/WeatherData")
+    private JMSContext context;
+
     private Queue queue;
 
     @Inject
-    private JMSContext context;
+    public SenderObjectImpl(JMSContext context) {
+        this.context = context;
+    }
+
+    @Resource(mappedName = "java:jboss/exported/jms/WeatherData")
+    public void setQueue(Queue queue) {
+        this.queue = queue;
+    }
 
     /**
      * {@inheritDoc}
      */
     @Override
     public void send(WeatherDataTransfer weatherDataTransfer) {
-        context.createProducer().send(queue, weatherDataTransfer);
+        JMSProducer jmsProducer = null;
+        if (weatherDataTransfer != null) {
+            jmsProducer = context.createProducer().send(queue, weatherDataTransfer);
+        }
     }
-
-
 }

@@ -18,5 +18,4 @@ public interface WeatherDao {
      * @return
      */
     WeatherEntity getLastItem();
-
 }

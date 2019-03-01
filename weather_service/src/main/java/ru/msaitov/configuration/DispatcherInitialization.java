@@ -4,6 +4,7 @@ import org.springframework.web.WebApplicationInitializer;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
 import org.springframework.web.servlet.DispatcherServlet;
 
+import javax.servlet.ServletContext;
 import javax.servlet.ServletRegistration;
 
 /**
@@ -16,7 +17,7 @@ public class DispatcherInitialization implements WebApplicationInitializer {
      * @param servletContext
      */
     @Override
-    public void onStartup(javax.servlet.ServletContext servletContext) {
+    public void onStartup(ServletContext servletContext) {
         AnnotationConfigWebApplicationContext context = new AnnotationConfigWebApplicationContext();
         context.register(SpringConfig.class);
         context.refresh();

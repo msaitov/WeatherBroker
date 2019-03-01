@@ -1,6 +1,6 @@
 package ru.msaitov;
 
-import ru.msaitov.sender.SenderImpl;
+import ru.msaitov.sender.Sender;
 
 import javax.inject.Inject;
 import javax.servlet.ServletException;
@@ -14,8 +14,13 @@ import java.io.IOException;
  */
 public class ServletJSP extends HttpServlet {
 
+
+    private Sender sender;
+
     @Inject
-    private SenderImpl sender;
+    public ServletJSP(Sender sender) {
+        this.sender = sender;
+    }
 
     /**
      * Принимаем по JSP название города и отправляем sender
@@ -25,8 +30,18 @@ public class ServletJSP extends HttpServlet {
      * @throws IOException
      */
     @Override
-    public void service(final HttpServletRequest req, final HttpServletResponse res) throws ServletException, IOException {
+    public void service(final HttpServletRequest req, final HttpServletResponse res) throws IOException {
+        if (req==null || res==null) {
+            throw new RuntimeException("Parameter req or res is null");
+        }
+
         String value = req.getParameter("cityWeather");
+
+        value = value.trim();
+        if (value.equals("")) {
+            throw new RuntimeException("Get paramemert cityWeather is empty");
+        }
+
         sender.sendCity(value);
         res.sendRedirect("index.jsp");
     }

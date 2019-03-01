@@ -1,29 +1,12 @@
 package ru.msaitov.sender;
 
-import javax.annotation.Resource;
-import javax.enterprise.context.RequestScoped;
-import javax.inject.Inject;
-import javax.jms.JMSContext;
-import javax.jms.Queue;
-
 /**
- * {@inheritDoc}
+ * Отправка названия города в очередь
  */
-@RequestScoped
-public class Sender implements SenderImpl {
-
-    @Resource(mappedName = "java:jboss/exported/jms/CityName")
-    private Queue queue;
-
-    @Inject
-    private JMSContext context;
-
-
+public interface Sender {
     /**
-     * {@inheritDoc}
+     * Принимаем в аргементе txt название города и отправляем в очередь
+     * @param txt
      */
-    @Override
-    public void sendCity(String txt) {
-        context.createProducer().send(queue, txt);
-    }
+    void sendCity(String txt);
 }
