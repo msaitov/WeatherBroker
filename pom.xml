@@ -6,9 +6,10 @@
 
     <packaging>pom</packaging>
     <modules>
-        <module>dto</module>
         <module>admin_api</module>
         <module>db_service</module>
+        <module>dto</module>
+        <module>weather_service</module>
         <module>yahoo_weather</module>
     </modules>
 
